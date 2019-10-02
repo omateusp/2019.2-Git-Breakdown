@@ -22,7 +22,7 @@ mocha_test:
     - apt-get update
     # install npm
     - apt-get -qq -y install curl
-    - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+    - curl -sL https://deb.nodesource.com/setup_10.x | -E bash -
     - apt-get -qq -y install nodejs
 
     # install docker
