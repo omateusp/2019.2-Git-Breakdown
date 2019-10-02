@@ -20,6 +20,8 @@ mocha_test:
   image: ubuntu:bionic
   before_script:
     # install npm
+    - apt-get install curl
+    - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     - apt-get install nodejs
 
     # install docker
