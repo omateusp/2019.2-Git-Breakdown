@@ -19,6 +19,7 @@ mocha_test:
   stage: test
   image: ubuntu:bionic
   before_script:
+    - apt-get update
     # install npm
     - apt-get install curl
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
