@@ -1,0 +1,56 @@
+# Gitlab-ci.yml file
+
+# This is the major part of the code which explains the stages present in our pipeline.
+# In a django application we have various stages which include testing, packing the code,
+# performing migrations, collecting static files and running the application.
+# The various stages are broadly classified into 3 main categories:
+
+# 1. Test       2. Release      3. Deploy
+
+stages:
+- test
+- build
+
+# Stage I
+# Testing Phase:
+# This is where the main code is tested.
+# Other options like code coverage, etc are also written in this phase
+mocha_test:
+  stage: test
+  services:
+    - node:latest
+    - docker:latest
+  image: debian
+  before_script:
+    # install requirement to api_gateway
+    - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
+    
+    # install requirement to api_gateway
+    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
+    
+    # install requirement to api_gateway
+    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+    
+    # install requirement to api_gateway
+    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
+    
+    # install requirement to api_gateway
+    - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
+  script:
+    # Command to test our application
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
+    - docker-compose up -d
+    - npm test --prefix ./APIs/api_gateway
+    - docker-compose down
+    
+# Stage II
+# Build Phase:
+# This is where the main code is built.
+build:
+    image: docker:dind
+    stage: build
+    script:
+        - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+        - pip install docker-compose
+        - docker-compose up -d
