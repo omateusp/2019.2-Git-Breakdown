@@ -20,10 +20,7 @@ test_api:
   image: docker:dind
   before_script:
     # install curl
-    - apt-get install curl
-    # install nodejs
-    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    - apt-get install nodejs
+    - apk --update add nodejs
   
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
