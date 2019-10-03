@@ -1,7 +1,7 @@
 FROM node:alpine
 
-RUN mkdir -p /usr/breakdown/branch_api
-WORKDIR /usr/breakdown/branch_api
+RUN mkdir -p /usr/breakdown/APIs/branch_api
+WORKDIR /usr/breakdown/APIs/branch_api
 
 COPY package*.json ./
 RUN npm install
