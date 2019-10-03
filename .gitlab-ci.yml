@@ -27,16 +27,16 @@ test_api:
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     - sudo apt-get install nodejs
 
-    - docker -v
-    - docker-compose -v
+
     #install docker-compose
-    - apk add python python-dev py-pip build-base curl libffi-dev openssl-dev gcc libc-dev make
-    - curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+    - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     - chmod +x /usr/local/bin/docker-compose
-    - pip install docker-compose
+    #- pip install docker-compose
     - sudo docker-compose build
     - sudo docker-compose up -d --build
   
+    - docker -v
+    - docker-compose -v
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
     
