@@ -20,7 +20,7 @@ test_api:
   image: docker:dind
   before_script:
     # install curl
-    - apk --update add nodejs
+    - apk add --update nodejs npm
   
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
