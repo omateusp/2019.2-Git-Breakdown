@@ -20,7 +20,7 @@ apis-test:
   image: tiangolo/docker-with-compose
   before_script:
     - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/branches_request/src/constants.js
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/test/constants.js
+    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/constants.js
     # install nodejs and npm
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     - sudo apt-get install nodejs

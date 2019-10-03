@@ -1,16 +1,16 @@
 const chai = require('chai')
 const request = require('request')
 const expect = chai.expect
-const constants = require('./constants')
+const constants = require('../constants')
 
 const urlBase = 'http://localhost:3000/commits'
-const token = constants.token
+//const token = constants.token
 
 describe('Commits route tests', () => {
   it('Test: Request valid', async () => {
     await request.get(
       {
-        url : urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown&token=' + token
+        url : urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown&token=' + constants.token
       },
       (error, response, body) => {
 
