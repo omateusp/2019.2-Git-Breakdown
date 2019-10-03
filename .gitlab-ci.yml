@@ -18,11 +18,10 @@ build:
   image: docker:dind
   stage: build
   script:
-      - ls
       # sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
       # sudo chmod +x /usr/local/bin/docker-compose
       - sudo docker-compose build --no-cache
-      - sudo docker-compose up
+      - sudo docker-compose up -d
 
 
 # Stage II
@@ -53,17 +52,17 @@ apis-test:
     #- sudo docker-compose up -d
     
     - npm test --prefix ./APIs/pullrequests_request
-    - sudo docker-compose restart
+    - sudo docker-compose restart -d
 
     - npm test --prefix ./APIs/branches_request
-    - sudo docker-compose restart
+    - sudo docker-compose restart -d
 
     #- npm test --prefix ./APIs/commits_request
     #- sudo docker-compose restart
 
     - npm test --prefix ./APIs/issues_request
-    - sudo docker-compose restart
+    - sudo docker-compose restart -d
 
     - npm test --prefix ./APIs/api_gateway
-    - sudo docker-compose down
+    - sudo docker-compose down -d
     
