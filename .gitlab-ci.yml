@@ -56,7 +56,6 @@ pullrequests_request:
   image: node:alpine
   before_script:
     # install requirement to pullrequests_request
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/pullrequests_request/src/constants.js
     - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
 
   script:
@@ -69,11 +68,23 @@ issues_request:
   image: node:alpine
   before_script:
     # install requirement to issues_request
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/issues_request/src/constants.js
     - npm --prefix ./APIs/issues_request install ./APIs/issues_request
 
   script:
     - sudo docker-compose up -d
     - npm test --prefix ./APIs/issues_request
     - sudo docker-compose down
-    
+
+commits_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to commits_request
+    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/constants.js
+    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/commits_request
+    - sudo docker-compose down
+
