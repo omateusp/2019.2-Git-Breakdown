@@ -1,9 +1,6 @@
 FROM node:alpine
 
-RUN mkdir -p /usr/breakdown/APIs
 WORKDIR /usr/breakdown/APIs
-
-COPY . .
 
 #RUN npm --prefix ./api_gateway install ./api_gateway
 #RUN npm --prefix ./branches_request install ./branches_request
