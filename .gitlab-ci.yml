@@ -18,8 +18,6 @@ build:
   image: docker:dind
   stage: build
   script:
-      # sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-      # sudo chmod +x /usr/local/bin/docker-compose
       - sudo docker-compose build --no-cache
 
 # Stage II
@@ -73,18 +71,5 @@ issues_request:
   script:
     - sudo docker-compose up -d
     - npm test --prefix ./APIs/issues_request
-    - sudo docker-compose down
-
-commits_request:
-  stage: test
-  image: node:alpine
-  before_script:
-    # install requirement to commits_request
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/constants.js
-    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
-
-  script:
-    - sudo docker-compose up -d
-    - npm test --prefix ./APIs/commits_request
     - sudo docker-compose down
 
