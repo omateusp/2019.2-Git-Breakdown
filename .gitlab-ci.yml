@@ -35,29 +35,29 @@ apis-test:
     # install requirement to branches_request
     - npm --prefix ./APIs/branches_request install ./APIs/branches_request
     # install requirement to commits_request
-    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+    #- npm --prefix ./APIs/commits_request install ./APIs/commits_request
     # install requirement to issues_request
     - npm --prefix ./APIs/issues_request install ./APIs/issues_request
     # install requirement to pullrequests_request
     - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
   script:
     - sudo docker-compose up -d
-    # Commands to test our application
+    
     - npm test --prefix ./APIs/pullrequests_request
-    #- sudo docker-compose down
-    #- sudo docker-compose up -d
+    - sudo docker-compose down
+    - sudo docker-compose up -d
 
     - npm test --prefix ./APIs/branches_request
-    #- sudo docker-compose down
-    #- sudo docker-compose up -d
+    - sudo docker-compose down
+    - sudo docker-compose up -d
 
     #- npm test --prefix ./APIs/commits_request
     #- sudo docker-compose down
     #- sudo docker-compose up -d
 
     - npm test --prefix ./APIs/issues_request
-    #- sudo docker-compose down
-    #- sudo docker-compose up -d
+    - sudo docker-compose down
+    - sudo docker-compose up -d
 
     - npm test --prefix ./APIs/api_gateway
     - sudo docker-compose down
