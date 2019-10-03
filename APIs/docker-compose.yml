@@ -2,12 +2,12 @@ version: "3"
 
 services:
   api_test:
-    build: ./APIs/.
+    build: ./
     depends_on:
       - gateway_api
-      
+
   gateway_api:
-    build: ./APIs/api_gateway/.
+    build: ./api_gateway/.
     command: npm start
     ports:
       - "3000:3000"
@@ -25,7 +25,7 @@ services:
       - branch_api
   
   commits_api:
-    build: ./APIs/commits_request/.
+    build: ./commits_request/.
     command: npm start
     ports:
       - "3001:3001"
@@ -33,7 +33,7 @@ services:
       - .:/usr/breakdown/commits_request
   
   issue_api:
-    build: ./APIs/issues_request/.
+    build: ./issues_request/.
     command: npm start
     ports:
       - "3002:3002"
@@ -41,7 +41,7 @@ services:
       - .:/usr/breakdown/issues_request
   
   pullrequest_api:
-    build: ./APIs/pullrequests_request/.
+    build: ./pullrequests_request/.
     command: npm start
     ports:
       - "3003:3003"
@@ -49,7 +49,7 @@ services:
       - .:/usr/breakdown/pullrequests_request
 
   branch_api:
-    build: ./APIs/branches_request/.
+    build: ./branches_request/.
     command: npm start
     ports:
       - "3004:3004"
