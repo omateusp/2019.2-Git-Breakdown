@@ -19,20 +19,21 @@ test_api:
   stage: test
   image: tiangolo/docker-with-compose:latest
   before_script:
+    - apk update
+    - apk upgrade
+
     # install nodejs and npm
     - apk add --update nodejs npm
 
     - docker -v
     - docker-compose -v
     #install docker-compose
-    - apk update
-    - apk upgrade
     #- apk add python python-dev py-pip build-base curl libffi-dev openssl-dev gcc libc-dev make
     #- curl -L https://github.com/docker/compose/releases/download/1.8.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
     #- chmod +x /usr/local/bin/docker-compose
     #- pip install docker-compose
     - docker-compose build
-    - docker-compose up -d
+    - docker-compose up -d --build
   
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
