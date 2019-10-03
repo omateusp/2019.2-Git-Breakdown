@@ -36,7 +36,7 @@ apis-test:
     #- npm --prefix ./APIs/branches_request install ./APIs/branches_request
     
     # install requirement to commits_request
-    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+    # npm --prefix ./APIs/commits_request install ./APIs/commits_request
     
     # install requirement to issues_request
     - npm --prefix ./APIs/issues_request install ./APIs/issues_request
@@ -47,7 +47,7 @@ apis-test:
     # Command to test our application
     - npm test --prefix ./APIs/pullrequests_request
     #- npm test --prefix ./APIs/branches_request
-    - npm test --prefix ./APIs/commits_request
+    # npm test --prefix ./APIs/commits_request
     - npm test --prefix ./APIs/issues_request
     - npm test --prefix ./APIs/api_gateway
     - sudo docker-compose down
