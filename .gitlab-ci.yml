@@ -23,8 +23,10 @@ test_api:
     - apk add --update nodejs npm
 
     #install docker-compose
-    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - apk add --no-cache py-pip
     - pip install docker-compose
+    - docker-compose build
+    - docker-compose up -d
   
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
@@ -42,7 +44,6 @@ test_api:
     #- npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
   script:
     # Command to test our application
-    - docker-compose up -d
     - npm test --prefix ./APIs/api_gateway
     - docker-compose down
     
