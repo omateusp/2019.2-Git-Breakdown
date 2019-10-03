@@ -15,44 +15,41 @@ stages:
 # Testing Phase:
 # This is where the main code is tested.
 # Other options like code coverage, etc are also written in this phase
-test_api:
+apis-test:
   stage: test
   image: docker:dind
   before_script:
-    - sudo apt update
-    - sudo apt upgrade
-
     # install nodejs and npm
     - sudo apt-get install curl
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     - sudo apt-get install nodejs
 
-
     #install docker-compose
     - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     - sudo chmod +x /usr/local/bin/docker-compose
-    #- pip install docker-compose
-    - sudo docker-compose build
+
     - sudo docker-compose up -d --build
   
-    - docker -v
-    - docker-compose -v
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
     
     # install requirement to api_gateway
-    #- npm --prefix ./APIs/branches_request install ./APIs/branches_request
+    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
     
     # install requirement to api_gateway
-    #- npm --prefix ./APIs/commits_request install ./APIs/commits_request
+    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
     
     # install requirement to api_gateway
-    #- npm --prefix ./APIs/issues_request install ./APIs/issues_request
+    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
     
     # install requirement to api_gateway
-    #- npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
+    - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
   script:
     # Command to test our application
+    - npm test --prefix ./APIs/pullrequests_request
+    - npm test --prefix ./APIs/branches_request
+    - npm test --prefix ./APIs/commits_request
+    - npm test --prefix ./APIs/issues_request
     - npm test --prefix ./APIs/api_gateway
     - sudo docker-compose down
     
@@ -60,9 +57,9 @@ test_api:
 # Build Phase:
 # This is where the main code is built.
 build:
-    image: docker:dind
-    stage: build
-    script:
-        - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
-        - pip install docker-compose
-        - docker-compose up -d
+  image: docker:dind
+  stage: build
+  script:
+      - sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      - sudo chmod +x /usr/local/bin/docker-compose
+      - sudo docker-compose build --no-cache
