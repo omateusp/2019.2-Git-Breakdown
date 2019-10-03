@@ -15,47 +15,24 @@ stages:
 # Testing Phase:
 # This is where the main code is tested.
 # Other options like code coverage, etc are also written in this phase
-mocha_test:
+test_api:
   stage: test
-  image: ubuntu:bionic
+  image: gitlab:dind
   before_script:
-    - apt-get update
-    # install npm
-    - apt-get -qq -y install curl
-    - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-    - apt-get -qq -y install nodejs
-
-    # install docker
-    - apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    gnupg-agent \
-    software-properties-common
-    - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-    - add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-    - apt-get -qq -y install docker-ce docker-ce-cli containerd.io
-
-    - curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-    - chmod +x /usr/local/bin/docker-compose
-
-    # install requirement to api_gateway
+# install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
     
     # install requirement to api_gateway
-    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
+    #- npm --prefix ./APIs/branches_request install ./APIs/branches_request
     
     # install requirement to api_gateway
-    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+    #- npm --prefix ./APIs/commits_request install ./APIs/commits_request
     
     # install requirement to api_gateway
-    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
+    #- npm --prefix ./APIs/issues_request install ./APIs/issues_request
     
     # install requirement to api_gateway
-    - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
+    #- npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
   script:
     # Command to test our application
     - docker-compose up -d
