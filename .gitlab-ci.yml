@@ -19,8 +19,12 @@ test_api:
   stage: test
   image: docker:dind
   before_script:
-    # install curl
+    # install nodejs and npm
     - apk add --update nodejs npm
+
+    #install docker-compose
+    - apk add --no-cache py-pip python-dev libffi-dev openssl-dev gcc libc-dev make
+    - pip install docker-compose
   
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
