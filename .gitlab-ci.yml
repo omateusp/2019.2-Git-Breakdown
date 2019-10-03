@@ -17,7 +17,7 @@ stages:
 # Other options like code coverage, etc are also written in this phase
 test_api:
   stage: test
-  image: docker:dind
+  image: docker
   before_script:
     # install nodejs and npm
     - apk add --update nodejs npm
