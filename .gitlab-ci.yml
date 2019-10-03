@@ -52,17 +52,17 @@ apis-test:
     #- sudo docker-compose up -d
     
     - npm test --prefix ./APIs/pullrequests_request
-    - sudo docker-compose restart -d
+    - sudo docker-compose restart
 
     - npm test --prefix ./APIs/branches_request
-    - sudo docker-compose restart -d
+    - sudo docker-compose restart
 
     #- npm test --prefix ./APIs/commits_request
     #- sudo docker-compose restart
 
     - npm test --prefix ./APIs/issues_request
-    - sudo docker-compose restart -d
+    - sudo docker-compose restart
 
     - npm test --prefix ./APIs/api_gateway
-    - sudo docker-compose down -d
+    - sudo docker-compose down
     
