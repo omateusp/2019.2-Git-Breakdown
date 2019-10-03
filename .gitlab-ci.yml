@@ -8,10 +8,22 @@
 # 1. Test       2. Release      3. Deploy
 
 stages:
-- test
 - build
+- test
 
 # Stage I
+# Build Phase:
+# This is where the main code is built.
+build:
+  image: docker:dind
+  stage: build
+  script:
+      # sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      # sudo chmod +x /usr/local/bin/docker-compose
+      - sudo docker-compose build --no-cache
+
+
+# Stage II
 # Testing Phase:
 # This is where the main code is tested.
 # Other options like code coverage, etc are also written in this phase
@@ -25,11 +37,6 @@ apis-test:
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     - sudo apt-get install nodejs
 
-    #install docker-compose
-    #- sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    #- sudo chmod +x /usr/local/bin/docker-compose
-    - sudo docker-compose build --no-cache
-  
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
     # install requirement to branches_request
@@ -62,13 +69,3 @@ apis-test:
     - npm test --prefix ./APIs/api_gateway
     - sudo docker-compose down
     
-# Stage II
-# Build Phase:
-# This is where the main code is built.
-build:
-  image: docker:dind
-  stage: build
-  script:
-      # sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-      # sudo chmod +x /usr/local/bin/docker-compose
-      - sudo docker-compose build --no-cache
