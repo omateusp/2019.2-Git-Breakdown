@@ -19,6 +19,9 @@ test_api:
   stage: test
   image: docker
   before_script:
+    # install gcc
+    - apk add build-base
+
     # install nodejs and npm
     - apk add --update nodejs npm
 
