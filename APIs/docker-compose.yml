@@ -3,6 +3,7 @@ version: "3"
 services:
   api_test:
     build: ./
+    command: npm test --prefix ./gateway_api
     depends_on:
       - gateway_api
 

@@ -12,4 +12,4 @@ COPY . .
 #RUN npm --prefix ./pullrequests_request install ./pullrequests_request
 
 #RUN npm test --prefix ./api_gateway
-CMD ["npm", "test", "--prefix", "./api_gateway"]
+CMD ["npm", "test", "--prefix", "./gateway_api"]
