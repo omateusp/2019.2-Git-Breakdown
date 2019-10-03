@@ -17,7 +17,7 @@ stages:
 # Other options like code coverage, etc are also written in this phase
 test_api:
   stage: test
-  image: gitlab:dind
+  image: ubuntu:18.04
   before_script:
 # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
