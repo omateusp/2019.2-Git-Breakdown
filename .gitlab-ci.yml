@@ -23,46 +23,33 @@ build:
       - sudo docker-compose build --no-cache
       - sudo docker-compose up -d
 
-
 # Stage II
 # Testing Phase:
 # This is where the main code is tested.
 # Other options like code coverage, etc are also written in this phase
-apis-test:
+api_gateway:
   stage: test
-  image: tiangolo/docker-with-compose
+  image: node:alpine
   before_script:
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/branches_request/src/constants.js
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/constants.js
-    # install nodejs and npm
-    - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-    - sudo apt-get install nodejs
-
     # install requirement to api_gateway
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
-    # install requirement to branches_request
-    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
-    # install requirement to commits_request
-    #- npm --prefix ./APIs/commits_request install ./APIs/commits_request
-    # install requirement to issues_request
-    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
-    # install requirement to pullrequests_request
-    - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
+
   script:
     #- sudo docker-compose up -d
-    
-    - npm test --prefix ./APIs/pullrequests_request
-    - sudo docker-compose restart
-
-    - npm test --prefix ./APIs/branches_request
-    - sudo docker-compose restart
-
-    #- npm test --prefix ./APIs/commits_request
-    #- sudo docker-compose restart
-
-    - npm test --prefix ./APIs/issues_request
-    - sudo docker-compose restart
 
     - npm test --prefix ./APIs/api_gateway
+    #- sudo docker-compose down
+
+branches_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to branches_request
+    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/branches_request/src/constants.js
+    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
+
+  script:
+    #- sudo docker-compose up -d
+
+    - npm test --prefix ./APIs/branches_request
     - sudo docker-compose down
-    
