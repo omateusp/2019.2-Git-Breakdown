@@ -22,6 +22,8 @@ test_api:
     # install nodejs and npm
     - apk add --update nodejs npm
 
+    - docker -v
+    - docker-compose -v
     #install docker-compose
     - apk update
     - apk upgrade
