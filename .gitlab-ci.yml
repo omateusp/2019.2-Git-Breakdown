@@ -17,7 +17,7 @@ stages:
 # Other options like code coverage, etc are also written in this phase
 apis-test:
   stage: test
-  image: docker/compose
+  image: tiangolo/docker-with-compose
   before_script:
     # install nodejs and npm
     - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
