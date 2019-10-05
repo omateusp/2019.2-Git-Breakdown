@@ -1,6 +1,7 @@
 stages:
 - build
 - test
+- deploy
 
 # Stage I
 # Build Phase:
@@ -69,7 +70,7 @@ issues_request:
 # Deploying Phase:
 # This is where the main code is deployed to our server at AWS.
 deploy:
-  stage: test
+  stage: deploy
   image: ubuntu:latest
   before_script:
     - "mkdir sshkey"
