@@ -40,6 +40,19 @@ branches_request:
     - npm test --prefix ./APIs/branches_request
     - sudo docker-compose down
 
+commits_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to commits_request
+    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/test/constants.js
+    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/commits_request
+    - sudo docker-compose down
+
 pullrequests_request:
   stage: test
   image: node:alpine
