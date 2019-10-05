@@ -77,3 +77,26 @@ issues_request:
     - npm test --prefix ./APIs/issues_request
     - sudo docker-compose down
 
+# Stage III
+# Deploying Phase:
+# This is where the main code is deployed to our server at AWS.
+deploy:
+  stage: test
+  image: ubuntu:latest
+  before_script:
+    - "mkdir sshkey"
+    - "echo $SSH_KEY_APP > ./sshkey/git-breakdown.pem"
+    - chmod 400 ./sshkey/git-breakdown.pem
+
+  script:
+    - ssh ubuntu@54.164.24.112 -i git-breakdown.pem
+    - sudo docker-compose down
+    - rm -rf 2019.2-Git-Breakdown
+    - git clone https://github.com/fga-eps-mds/2019.2-Git-Breakdown.git
+    - cd 2019.2-Git-Breakdown
+    - sudo docker-compose build --no-cache
+    - sudo docker-compose up -d
+    - exit
+
+  only:
+    - master
