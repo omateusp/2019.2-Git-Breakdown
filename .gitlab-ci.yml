@@ -19,22 +19,12 @@ build:
 # Deploying Phase:
 # This is where the main code is deployed to our server at AWS.
 deploy:
-  stage: deploy
-  image: ubuntu:latest
-  before_script:
-    - mkdir sshkey
-    - echo "$SSH_KEY_APP" >> ./sshkey/git-breakdown.pem
-    - chmod 600 ./sshkey/git-breakdown.pem
-
-  script:
-    - ssh ubuntu@54.164.24.112 -i git-breakdown.pem
-    - sudo docker-compose down
-    - rm -rf 2019.2-Git-Breakdown
-    - git clone https://github.com/fga-eps-mds/2019.2-Git-Breakdown.git
-    - cd 2019.2-Git-Breakdown
-    - sudo docker-compose build --no-cache
-    - sudo docker-compose up -d
-    - exit
-
   only:
     - master
+  stage: deploy
+  image: node:alpine
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+
+  script:
+    - bash deploy/deploy.sh
