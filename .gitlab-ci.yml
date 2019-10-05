@@ -1,74 +1,103 @@
-# Gitlab-ci.yml file
-
-# This is the major part of the code which explains the stages present in our pipeline.
-# In a django application we have various stages which include testing, packing the code,
-# performing migrations, collecting static files and running the application.
-# The various stages are broadly classified into 3 main categories:
-
-# 1. Test       2. Release      3. Deploy
-
 stages:
-- test
 - build
+- test
 
 # Stage I
-# Testing Phase:
-# This is where the main code is tested.
-# Other options like code coverage, etc are also written in this phase
-apis-test:
-  stage: test
-  image: tiangolo/docker-with-compose
-  before_script:
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/branches_request/src/constants.js
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/constants.js
-    # install nodejs and npm
-    - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-    - sudo apt-get install nodejs
-
-    #install docker-compose
-    #- sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    #- sudo chmod +x /usr/local/bin/docker-compose
-    - sudo docker-compose build --no-cache
-  
-    # install requirement to api_gateway
-    - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
-    # install requirement to branches_request
-    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
-    # install requirement to commits_request
-    #- npm --prefix ./APIs/commits_request install ./APIs/commits_request
-    # install requirement to issues_request
-    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
-    # install requirement to pullrequests_request
-    - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
-  script:
-    - sudo docker-compose up -d
-    
-    - npm test --prefix ./APIs/pullrequests_request
-    - sudo docker-compose down
-    - sudo docker-compose up -d
-
-    - npm test --prefix ./APIs/branches_request
-    - sudo docker-compose down
-    - sudo docker-compose up -d
-
-    #- npm test --prefix ./APIs/commits_request
-    #- sudo docker-compose down
-    #- sudo docker-compose up -d
-
-    - npm test --prefix ./APIs/issues_request
-    - sudo docker-compose down
-    - sudo docker-compose up -d
-
-    - npm test --prefix ./APIs/api_gateway
-    - sudo docker-compose down
-    
-# Stage II
 # Build Phase:
 # This is where the main code is built.
 build:
   image: docker:dind
   stage: build
   script:
-      # sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-      # sudo chmod +x /usr/local/bin/docker-compose
+      - sudo docker-compose down
       - sudo docker-compose build --no-cache
+
+# Stage II
+# Testing Phase:
+# This is where the main code is tested.
+# Other options like code coverage, etc are also written in this phase
+api_gateway:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to api_gateway
+    - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/api_gateway
+    - sudo docker-compose down
+
+branches_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to branches_request
+    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/branches_request/src/constants.js
+    - npm --prefix ./APIs/branches_request install ./APIs/branches_request
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/branches_request
+    - sudo docker-compose down
+
+commits_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to commits_request
+    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/test/constants.js
+    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/commits_request
+    - sudo docker-compose down
+
+pullrequests_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to pullrequests_request
+    - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/pullrequests_request
+    - sudo docker-compose down
+
+issues_request:
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to issues_request
+    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
+
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/issues_request
+    - sudo docker-compose down
+
+# Stage III
+# Deploying Phase:
+# This is where the main code is deployed to our server at AWS.
+deploy:
+  stage: test
+  image: ubuntu:latest
+  before_script:
+    - "mkdir sshkey"
+    - "echo $SSH_KEY_APP > ./sshkey/git-breakdown.pem"
+    - chmod 400 ./sshkey/git-breakdown.pem
+
+  script:
+    - ssh ubuntu@54.164.24.112 -i git-breakdown.pem
+    - sudo docker-compose down
+    - rm -rf 2019.2-Git-Breakdown
+    - git clone https://github.com/fga-eps-mds/2019.2-Git-Breakdown.git
+    - cd 2019.2-Git-Breakdown
+    - sudo docker-compose build --no-cache
+    - sudo docker-compose up -d
+    - exit
+
+  only:
+    - master

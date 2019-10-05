@@ -1,10 +1,9 @@
 const chai = require('chai')
 const request = require('request')
+const constants = require('constants')
 const expect = chai.expect
-const constants = require('../constants')
 
 const urlBase = 'http://localhost:3000/commits'
-//const token = constants.token
 
 describe('Commits route tests', () => {
   it('Test: Request valid', async () => {
