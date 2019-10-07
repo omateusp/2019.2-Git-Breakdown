@@ -9,9 +9,9 @@ build:
   image: docker:dind
   stage: build
   script:
-    - sudo docker ps
-    - sudo docker-compose down
-    - sudo docker-compose build
+    - docker ps
+    - docker-compose down
+    - docker-compose build
 
 # Stage II
 # Testing Phase:
@@ -25,9 +25,9 @@ api_gateway:
     - npm --prefix ./APIs/api_gateway install ./APIs/api_gateway
 
   script:
-    - sudo docker-compose up -d
+    - docker-compose up -d
     - npm test --prefix ./APIs/api_gateway
-    - sudo docker-compose down
+    - docker-compose down
 
 branches_request:
   stage: test
