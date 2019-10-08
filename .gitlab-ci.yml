@@ -73,11 +73,12 @@ deploy:
   stage: deploy
   image: ubuntu:latest
   before_script:
-    - mkdir sshkey
-    - echo "$SSH_KEY_APP" >> ./sshkey/git-breakdown.pem
-    - chmod 600 ./sshkey/git-breakdown.pem
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - chmod a+x
+    # - mkdir sshkey
+    # - echo "$SSH_KEY_APP" >> ./sshkey/git-breakdown.pem
+    # - chmod 600 ./sshkey/git-breakdown.pem
 
   script:
     #- ssh ubuntu@18.215.242.203 -i ./sshkey/git-breakdown.pem
     - bash deploy/deploy.sh
-    
