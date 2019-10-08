@@ -11,12 +11,12 @@ build:
   stage: build
   script:
     - sudo docker-compose down
-    - sudo docker-compose build #--no-cache
+    - sudo docker-compose build --no-cache
 
-# # Stage II
-# # Testing Phase:
-# # This is where the main code is tested.
-# # Other options like code coverage, etc are also written in this phase
+# Stage II
+# Testing Phase:
+# This is where the main code is tested.
+# Other options like code coverage, etc are also written in this phase
 api_gateway:
   stage: test
   image: node:alpine
@@ -49,22 +49,23 @@ pullrequests_request:
     # install requirement to pullrequests_request
     - npm --prefix ./APIs/pullrequests_request install ./APIs/pullrequests_request
 
- script:
-   - sudo docker-compose up -d
-   - npm test --prefix ./APIs/pullrequests_request
-   - sudo docker-compose down
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/pullrequests_request
+    - sudo docker-compose down
 
 issues_request:
- stage: test
- image: node:alpine
- before_script:
-   # install requirement to issues_request
-   - npm --prefix ./APIs/issues_request install ./APIs/issues_request
+  stage: test
+  image: node:alpine
+  before_script:
+    # install requirement to issues_request
+    - npm --prefix ./APIs/issues_request install ./APIs/issues_request
 
- script:
-   - sudo docker-compose up -d
-   - npm test --prefix ./APIs/issues_request
-   - sudo docker-compose down
+  script:
+    - sudo docker-compose up -d
+    - npm test --prefix ./APIs/issues_request
+    - sudo docker-compose down
+
 
 # Stage III
 # Deploying Phase:
@@ -78,3 +79,6 @@ deploy:
 
   script:
     - bash deploy/deploy.sh
+
+  only:
+    - master
