@@ -74,7 +74,7 @@ deploy:
   image: ubuntu:latest
   before_script:
     - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - chmod a+x
+    - chmod a+x ./deploy/disableHostKeyChecking.sh
     # - mkdir sshkey
     # - echo "$SSH_KEY_APP" >> ./sshkey/git-breakdown.pem
     # - chmod 600 ./sshkey/git-breakdown.pem
