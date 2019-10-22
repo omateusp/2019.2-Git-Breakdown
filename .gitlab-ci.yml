@@ -1,6 +1,8 @@
+# Git Breakdown CI/CD configuration file.
 stages:
 - build
 - test
+- deploy
 
 # Stage I
 # Build Phase:
@@ -9,8 +11,8 @@ build:
   image: docker:dind
   stage: build
   script:
-      - sudo docker-compose down
-      - sudo docker-compose build --no-cache
+    - sudo docker-compose down
+    - sudo docker-compose build --no-cache
 
 # Stage II
 # Testing Phase:
@@ -41,19 +43,6 @@ branches_request:
     - npm test --prefix ./APIs/branches_request
     - sudo docker-compose down
 
-commits_request:
-  stage: test
-  image: node:alpine
-  before_script:
-    # install requirement to commits_request
-    - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/commits_request/test/constants.js
-    - npm --prefix ./APIs/commits_request install ./APIs/commits_request
-
-  script:
-    - sudo docker-compose up -d
-    - npm test --prefix ./APIs/commits_request
-    - sudo docker-compose down
-
 pullrequests_request:
   stage: test
   image: node:alpine
@@ -78,26 +67,19 @@ issues_request:
     - npm test --prefix ./APIs/issues_request
     - sudo docker-compose down
 
+
 # Stage III
 # Deploying Phase:
 # This is where the main code is deployed to our server at AWS.
 deploy:
-  stage: test
+  stage: deploy
   image: ubuntu:latest
   before_script:
-    - "mkdir sshkey"
-    - "echo $SSH_KEY_APP > ./sshkey/git-breakdown.pem"
-    - chmod 400 ./sshkey/git-breakdown.pem
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - chmod a+x ./deploy/disableHostKeyChecking.sh
 
   script:
-    - ssh ubuntu@54.164.24.112 -i git-breakdown.pem
-    - sudo docker-compose down
-    - rm -rf 2019.2-Git-Breakdown
-    - git clone https://github.com/fga-eps-mds/2019.2-Git-Breakdown.git
-    - cd 2019.2-Git-Breakdown
-    - sudo docker-compose build --no-cache
-    - sudo docker-compose up -d
-    - exit
+    - bash deploy/deploy.sh
 
   only:
     - master
