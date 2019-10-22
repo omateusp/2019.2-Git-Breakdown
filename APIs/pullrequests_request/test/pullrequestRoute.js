@@ -3,7 +3,7 @@ const axios = require('axios')
 const expect = chai.expect
 chai.use(require('chai-json'))
 
-const urlBase = 'http://localhost:3003/pullrequests'
+const urlBase = 'pullrequest_api:3003/pullrequests'
 const token = require('../../constants')
 const urlEndpoint = urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown&token=' + token
 

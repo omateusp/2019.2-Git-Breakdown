@@ -2,7 +2,7 @@ const chai = require('chai')
 const axios = require('axios')
 const expect = chai.expect
 
-const urlBase = 'http://localhost:3002/routes'
+const urlBase = 'issue_api:3002/routes'
 const token = require('../../constants')
 const urlEndpoint = urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown=' + token
 const url = urlBase + '?owner=f'
