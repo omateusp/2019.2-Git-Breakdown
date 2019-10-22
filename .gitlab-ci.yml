@@ -12,7 +12,6 @@ build:
   stage: build
   script:
     - sudo docker-compose down
-    - sudo docker stop $(docker ps -a -q)
     - sudo docker-compose build
 
 # Stage II
