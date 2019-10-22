@@ -2,7 +2,7 @@ const chai = require('chai')
 const axios = require('axios')
 const expect = chai.expect
 
-const urlBase = 'commit_api:3001/commits'
+const urlBase = 'http://commit_api:3001/commits'
 const token = require('../../constants')
 const urlEndpoint = urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown&token=' + token
 

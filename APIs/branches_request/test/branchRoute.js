@@ -2,7 +2,7 @@ const chai = require('chai')
 const axios = require('axios')
 const expect = chai.expect
 
-const urlBase = 'branch_api:3004/branches'
+const urlBase = '172.22.0.5:3004/branches'
 const token = require('../../constants')
 const urlEndpoint = urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown=' + token
 

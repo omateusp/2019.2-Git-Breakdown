@@ -4,7 +4,7 @@ const axios = require('axios')
 const expect = chai.expect
 
 describe('API Gateway integration tests', () => {
-    let urlBase = 'gateway_api:3000'
+    let urlBase = 'http://test-breakdown_gateway_api_1:3000'
     const token = require('../../constants')
     let urlParams = '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown&token=' + token
     
