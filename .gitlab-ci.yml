@@ -3,7 +3,6 @@ stages:
 - build
 - test
 - deploy
-- code_cove
 
 # Stage I
 # Build Phase:
@@ -22,6 +21,9 @@ build:
 api_gateway:
   stage: test
   image: node:alpine
+  cache: 
+    paths:
+      - node_modules/
   before_script:
     # install requirement to api_gateway
     - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/constants.js
@@ -35,6 +37,9 @@ api_gateway:
 branches_request:
   stage: test
   image: node:alpine
+  cache: 
+    paths:
+      - node_modules/
   before_script:
     # install requirement to branches_request
     - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/constants.js
@@ -48,6 +53,9 @@ branches_request:
 pullrequests_request:
   stage: test
   image: node:alpine
+  cache: 
+    paths:
+      - node_modules/
   before_script:
     # install requirement to pullrequests_request
     - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/constants.js
@@ -61,6 +69,9 @@ pullrequests_request:
 issues_request:
   stage: test
   image: node:alpine
+  cache: 
+    paths:
+      - node_modules/
   before_script:
     # install requirement to issues_request
     - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/constants.js
@@ -74,6 +85,9 @@ issues_request:
 commits_request:
   stage: test
   image: node:alpine
+  cache: 
+    paths:
+      - node_modules/
   before_script:
     # install requirement to commits_request
     - echo "exports.token = '$GIT_TOKEN'" >> ./APIs/constants.js
@@ -85,7 +99,7 @@ commits_request:
     - sudo docker-compose down
 
 code_coverage:
-  stage: code_cove
+  stage: test
   image: node:alpine
   cache: 
     paths:
