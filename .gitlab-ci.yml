@@ -83,6 +83,13 @@ commits_request:
     - npm test --prefix ./APIs/commits_request
     - sudo docker-compose down
 
+code_coverage:
+  stage: test
+  image: node:alpine
+  script:
+  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
+
 
 # Stage III
 # Deploying Phase:
