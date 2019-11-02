@@ -3,6 +3,7 @@ stages:
 - build
 - test
 - deploy
+- code_cove
 
 # Stage I
 # Build Phase:
@@ -84,8 +85,11 @@ commits_request:
     - sudo docker-compose down
 
 code_coverage:
-  stage: test
+  stage: code_cove
   image: node:alpine
+  cache: 
+    paths:
+      - node_modules/
   script:
   - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
   - codecov
