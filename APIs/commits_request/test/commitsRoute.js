@@ -2,7 +2,7 @@ const chai = require('chai')
 const axios = require('axios')
 const expect = chai.expect
 
-const urlBase = 'http://commit_api:3001/commits'
+const urlBase = 'http://localhost:3001/commits'
 const token = require('../../constants')
 const urlEndpoint = urlBase + '?owner=fga-eps-mds&repository=2019.2-Git-Breakdown&token=' + token
 
@@ -25,13 +25,12 @@ describe('Commits route tests', () => {
         if(_body[0].commits != undefined){
             expect(_body[1]).to.have.property('name')
             expect(_body[1]).to.have.property('commits')
-            expect(_body[1]).to.have.property('additions')
-            expect(_body[1]).to.have.property('deletions')
         }
-        
+        done()  
       }
     ).catch(err => {
-      console.log(err)
+      const errorResponse = err
+      done()
     })
     done()
   })
